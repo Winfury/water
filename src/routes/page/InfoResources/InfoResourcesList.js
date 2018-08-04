@@ -92,13 +92,11 @@ export default class InfoResourcesList extends PureComponent {
   };
 
   deleteItem = id => {
+    console.log(id);
     const { dispatch } = this.props;
     dispatch({
       type: 'infoResources/remove',
       payload: id,
-      callback: () => {
-        this.handleSearch()
-      },
     });
   };
 

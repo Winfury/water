@@ -28,13 +28,13 @@ export default {
       });
       yield put(routerRedux.push('/infoResources/infoResources-list'));
     },
-    *remove({ payload, callback }, { call, put }) {
+    *remove({ payload }, { call, put }) {
       const response = yield call(removeInfoResources, payload);
       yield put({
         type: 'save',
         payload: response,
       });
-      if (callback) callback();
+      yield put(routerRedux.push('/infoResources/infoResources-list'));
     },
   },
 

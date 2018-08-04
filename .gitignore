@@ -3,8 +3,8 @@
 # dependencies
 /node_modules
 # roadhog-api-doc ignore
-/src/utils/request-temp.js
-_roadhog-api-doc
+# /src/utils/request-temp.js
+# _roadhog-api-doc
 
 # production
 /dist
@@ -18,7 +18,7 @@ yarn-error.log
 /coverage
 .idea
 yarn.lock
-package-lock.json
+# package-lock.json
 *bak
 
 # visual studio code 

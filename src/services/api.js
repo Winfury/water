@@ -6,7 +6,7 @@ export async function queryInfoResources(keyword) {
   return request(`/resource/all/page/1/size/50?${stringify(keyword)}`);
 }
 export async function removeInfoResources(id) {
-  return request(`/resource/${stringify(id)}`, {
+  return request(`/resource/${id}`, {
     method: 'DELETE',
   });
 }
