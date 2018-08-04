@@ -138,6 +138,7 @@ const proxy = {
 
   'GET /resource/(.*)': 'http://16.187.145.62:8081/resource/',
   'POST /(.*)': 'http://16.187.145.62:8081/',
+  'DELETE /(.*)': 'http://16.187.145.62:8081/',
 };
 
 export default (noProxy ? {

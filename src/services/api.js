@@ -5,6 +5,11 @@ import request from '../utils/request';
 export async function queryInfoResources(keyword) {
   return request(`/resource/all/page/1/size/50?${stringify(keyword)}`);
 }
+export async function removeInfoResources(id) {
+  return request(`/resource/${stringify(id)}`, {
+    method: 'DELETE',
+  });
+}
 export async function addInfoResources(params) {
   params.creatorId = "admin";
   params.databaseType = "D0001";

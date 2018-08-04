@@ -91,6 +91,17 @@ export default class InfoResourcesList extends PureComponent {
     });
   };
 
+  deleteItem = id => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'infoResources/remove',
+      payload: id,
+      callback: () => {
+        this.handleSearch()
+      },
+    });
+  };
+
   renderSimpleForm() {
     const { form } = this.props;
     const { getFieldDecorator } = form;
@@ -160,11 +171,11 @@ export default class InfoResourcesList extends PureComponent {
       },
       {
         title: '操作',
-        render: () => (
+        render: (record) => (
           <Fragment>
             <a href="">编辑</a>
             <Divider type="vertical" />
-            <a href="dashboard/analysis">删除</a>
+            <a onClick={() => this.deleteItem(record.id)}>删除</a>
           </Fragment>
         ),
       },

@@ -1,5 +1,6 @@
-import { queryInfoResources, removeRule, addInfoResources } from '../services/api';
+
 import { routerRedux } from 'dva/router';
+import { queryInfoResources, removeInfoResources, addInfoResources } from '../services/api';
 
 export default {
   namespace: 'infoResources',
@@ -19,22 +20,16 @@ export default {
         payload: response,
       });
     },
-    *add({ payload, callback }, { call, put }) {
-      const response = yield call(addInfoResources, payload);
+    *add({ payload }, { call, put }) {
+      yield call(addInfoResources, payload);
       yield put({
         type: 'save',
-        payload: response,
+        payload,
       });
-      if (callback) {
-        yield put(
-          routerRedux.push({
-            pathname: '/infoResources/infoResources-list',
-          })
-        );
-      };
+      yield put(routerRedux.push('/infoResources/infoResources-list'));
     },
     *remove({ payload, callback }, { call, put }) {
-      const response = yield call(removeRule, payload);
+      const response = yield call(removeInfoResources, payload);
       yield put({
         type: 'save',
         payload: response,
