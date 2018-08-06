@@ -92,7 +92,6 @@ export default class RuleCodeList extends PureComponent {
   };
 
   deleteItem = id => {
-    console.log(id);
     const { dispatch } = this.props;
     dispatch({
       type: 'codeRule/remove',

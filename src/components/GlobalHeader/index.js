@@ -111,17 +111,17 @@ export default class GlobalHeader extends PureComponent {
               console.log('enter', value); // eslint-disable-line
             }}
           />
-          <Tooltip title="使用文档">
+          <Tooltip title="系统集成">
             <a
               target="_blank"
-              href="http://pro.ant.design/docs/getting-started"
+              href="http://47.104.158.227:8081/swagger-ui.html#/"
               rel="noopener noreferrer"
               className={styles.action}
             >
-              <Icon type="question-circle-o" />
+              <Icon type="api" />
             </a>
           </Tooltip>
-          <NoticeIcon
+          {/* <NoticeIcon
             className={styles.action}
             count={currentUser.notifyCount}
             onItemClick={(item, tabProps) => {
@@ -150,7 +150,7 @@ export default class GlobalHeader extends PureComponent {
               emptyText="你已完成所有待办"
               emptyImage="https://gw.alipayobjects.com/zos/rmsportal/HsIsxMZiWKrNUavQUXqx.svg"
             />
-          </NoticeIcon>
+          </NoticeIcon> */}
           {currentUser.name ? (
             <Dropdown overlay={menu}>
               <span className={`${styles.action} ${styles.account}`}>

@@ -77,20 +77,6 @@ export default class BasicForms extends PureComponent {
                 ],
               })(<Input placeholder="请输入规则名称" />)}
             </FormItem>
-            <Form.Item {...formItemLayout} label="类别">
-              {getFieldDecorator('kind', {
-                rules: [{ required: true, message: '类别' }],
-              })(
-                <Select placeholder="请选择类别">
-                  <Option value="1">用户</Option>
-                  <Option value="2">网点</Option>
-                  <Option value="3">水表</Option>
-                  <Option value="4">水厂</Option>
-                </Select>
-              )}
-            </Form.Item>
-
-
             <Form.Item {...formItemLayout} label="规则详情">
 
               {getFieldDecorator('ruleCreationItemDetails', {

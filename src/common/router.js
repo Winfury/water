@@ -73,6 +73,11 @@ export const getRouterData = app => {
   const routerConfig = {
     '/': {
       component: dynamicWrapper(app, ['user', 'login'], () => import('../layouts/BasicLayout')),
+    },    
+    
+    // 案例路由
+    '/dashboard/analysis': {
+      component: dynamicWrapper(app, ['chart'], () => import('../routes/Dashboard/Analysis')),
     },
 
     // 信息资源目录
@@ -113,10 +118,47 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, [], () => import('../routes/page/CodeApplicationVerification/CodeApplicationForm')),
     },
 
-    // 案例路由
-    '/dashboard/analysis': {
+    // static
+    '/codeApplicationVerification/verification-form': {
+      component: dynamicWrapper(app, [], () => import('../routes/page/CodeApplicationVerification/CodeApplicationList')),
+    },
+    '/codeApprove/codeApprove-list': {
+      component: dynamicWrapper(app, [], () => import('../routes/page/CodeApplicationVerification/CodeApplicationList')),
+    },
+    '/change/change-list': {
+      component: dynamicWrapper(app, [], () => import('../routes/page/CodeApplicationVerification/CodeApplicationList')),
+    },
+    '/codeMng/getRule': {
+      component: dynamicWrapper(app, [], () => import('../routes/page/CodeApplicationVerification/CodeApplicationList')),
+    },
+    '/codeMng/getCode': {
+      component: dynamicWrapper(app, [], () => import('../routes/page/CodeApplicationVerification/CodeApplicationList')),
+    },
+    '/codeMng/issueRule': {
+      component: dynamicWrapper(app, [], () => import('../routes/page/CodeApplicationVerification/CodeApplicationForm')),
+    },
+    '/codeMng/issueCode': {
+      component: dynamicWrapper(app, [], () => import('../routes/page/CodeApplicationVerification/CodeApplicationForm')),
+    },
+    '/chart/chart-list': {
       component: dynamicWrapper(app, ['chart'], () => import('../routes/Dashboard/Analysis')),
     },
+    '/chart/chart-info': {
+      component: dynamicWrapper(app, ['chart'], () => import('../routes/Dashboard/Analysis')),
+    },
+    '/setting/setting-log': {
+      component: dynamicWrapper(app, [], () => import('../routes/page/CodeApplicationVerification/CodeApplicationList')),
+    },
+    '/setting/setting-auth': {
+      component: dynamicWrapper(app, [], () => import('../routes/page/CodeApplicationVerification/CodeApplicationList')),
+    },
+    '/setting/setting-config': {
+      component: dynamicWrapper(app, [], () => import('../routes/page/CodeApplicationVerification/CodeApplicationList')),
+    },
+    '/setting/setting-copy': {
+      component: dynamicWrapper(app, [], () => import('../routes/page/CodeApplicationVerification/CodeApplicationList')),
+    },
+
     '/dashboard/monitor': {
       component: dynamicWrapper(app, ['monitor'], () => import('../routes/Dashboard/Monitor')),
     },

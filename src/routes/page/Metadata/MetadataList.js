@@ -149,7 +149,7 @@ export default class MetadataList extends PureComponent {
         dataIndex: 'code',
       },
       {
-        title: '属性',
+        title: '分类',
         dataIndex: 'attributesName',
       },
       {

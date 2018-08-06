@@ -83,11 +83,11 @@ export default class BasicForms extends PureComponent {
               })(<Input placeholder="请输入元数据代码" />)}
             </FormItem>
 
-            <Form.Item {...formItemLayout} label="属性">
+            <Form.Item {...formItemLayout} label="分类">
               {getFieldDecorator('attributes', {
-                rules: [{ required: true, message: '请选择属性' }],
+                rules: [{ required: true, message: '请选择分类' }],
               })(
-                <Select placeholder="请选择属性">
+                <Select placeholder="请选择分类">
                   <Option value="A0001">类别</Option>
                   <Option value="A0002">区</Option>
                   <Option value="A0003">街道</Option>

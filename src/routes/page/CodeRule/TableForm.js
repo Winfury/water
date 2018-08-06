@@ -51,9 +51,8 @@ export default class TableForm extends PureComponent {
     const newData = data.map(item => ({ ...item }));
     newData.push({
       key: `NEW_TEMP_ID_${this.index}`,
-      attrKey: "Key",
       attrName: "Name",
-      orderNum: 0,
+      orderNum: this.index,
       editable: true,
       isNew: true,
     });
@@ -96,7 +95,7 @@ export default class TableForm extends PureComponent {
         return;
       }
       const target = this.getRowByKey(key) || {};
-      if (!target.attrName || !target.name) {
+      if (!target.attrValue || !target.attrKey ) {
         message.error('请填写完整规则详情。');
         e.target.focus();
         this.setState({
@@ -104,6 +103,7 @@ export default class TableForm extends PureComponent {
         });
         return;
       }
+      target.attrName = target.attrValue;
       const { data } = this.state;
       const { onChange } = this.props;
       delete target.isNew;
@@ -134,21 +134,21 @@ export default class TableForm extends PureComponent {
     const columns = [
       {
         title: '类型',
-        dataIndex: 'name',
-        key: 'name',
+        dataIndex: 'attrKey',
+        key: 'attrKey',
         width: '35%',
         render: (text, record) => {
           if (record.editable) {
             return (
               <Select
                 value={text}
-                defaultValue='0'
                 autoFocus
-                onSelect={e => this.handleFieldChange(e, 'name', record.key)}
+                onSelect={e => this.handleFieldChange(e, 'attrKey', record.key)}
               >
-                <Option value="0">属性</Option>
-                <Option value="1">连接符</Option>
-                <Option value="2">随机数</Option>
+                <Option value="attribute">属性</Option>
+                <Option value="connector">连接符</Option>
+                <Option value="random">随机数</Option>
+                <Option value="type">类别</Option>
               </Select>
             );
           }
@@ -171,21 +171,21 @@ export default class TableForm extends PureComponent {
                 <Option
                   value="年份"
                   style={{
-                    display: record.name === '0' ? 'block' : 'none',
+                    display: record.attrKey === 'attribute' ? 'block' : 'none',
                   }}
                 > 年份
                 </Option>
                 <Option
                   value="区"
                   style={{
-                    display: record.name === '0' ? 'block' : 'none',
+                    display: record.attrKey === 'attribute' ? 'block' : 'none',
                   }}
                 > 区
                 </Option>
                 <Option
                   value="街道"
                   style={{
-                    display: record.name === '0' ? 'block' : 'none',
+                    display: record.attrKey === 'attribute' ? 'block' : 'none',
                   }}
                 > 街道
                 </Option>
@@ -193,35 +193,35 @@ export default class TableForm extends PureComponent {
                 <Option
                   value="%"
                   style={{
-                    display: record.name === '1' ? 'block' : 'none',
+                    display: record.attrKey === 'connector' ? 'block' : 'none',
                   }}
                 > %
                 </Option>
                 <Option
                   value="*"
                   style={{
-                    display: record.name === '1' ? 'block' : 'none',
+                    display: record.attrKey === 'connector' ? 'block' : 'none',
                   }}
                 > *
                 </Option>
                 <Option
                   value="#"
                   style={{
-                    display: record.name === '1' ? 'block' : 'none',
+                    display: record.attrKey === 'connector' ? 'block' : 'none',
                   }}
                 > #
                 </Option>
                 <Option
                   value="@"
                   style={{
-                    display: record.name === '1' ? 'block' : 'none',
+                    display: record.attrKey === 'connector' ? 'block' : 'none',
                   }}
                 > @
                 </Option>
                 <Option
                   value="——"
                   style={{
-                    display: record.name === '1' ? 'block' : 'none',
+                    display: record.attrKey === 'connector' ? 'block' : 'none',
                   }}
                 > ——
                 </Option>
@@ -230,39 +230,75 @@ export default class TableForm extends PureComponent {
                 <Option
                   value="1"
                   style={{
-                    display: record.name === '2' ? 'block' : 'none',
+                    display: record.attrKey === 'random' ? 'block' : 'none',
                   }}
                 > 1
                 </Option>
                 <Option
                   value="2"
                   style={{
-                    display: record.name === '2' ? 'block' : 'none',
+                    display: record.attrKey === 'random' ? 'block' : 'none',
                   }}
                 > 2
                 </Option>
                 <Option
                   value="3"
                   style={{
-                    display: record.name === '2' ? 'block' : 'none',
+                    display: record.attrKey === 'random' ? 'block' : 'none',
                   }}
                 > 3
                 </Option>
                 <Option
                   value="4"
                   style={{
-                    display: record.name === '2' ? 'block' : 'none',
+                    display: record.attrKey === 'random' ? 'block' : 'none',
                   }}
                 > 4
                 </Option>
                 <Option
                   value="5"
                   style={{
-                    display: record.name === '2' ? 'block' : 'none',
+                    display: record.attrKey === 'random' ? 'block' : 'none',
                   }}
                 > 5
                 </Option>
 
+                <Option
+                  value="P"
+                  style={{
+                    display: record.attrKey === 'type' ? 'block' : 'none',
+                  }}
+                > 人事类
+                </Option>
+                <Option
+                  value="W"
+                  style={{
+                    display: record.attrKey === 'type' ? 'block' : 'none',
+                  }}
+                > 网点
+                </Option>
+                <Option
+                  value="K"
+                  style={{
+                    display: record.attrKey === 'type' ? 'block' : 'none',
+                  }}
+                > 客户
+                </Option>
+                <Option
+                  value="S"
+                  style={{
+                    display: record.attrKey === 'type' ? 'block' : 'none',
+                  }}
+                > 水厂
+                </Option>
+                
+                <Option
+                  value="M"
+                  style={{
+                    display: record.attrKey === 'type' ? 'block' : 'none',
+                  }}
+                > 水表
+                </Option>
               </Select>
             );
           }
