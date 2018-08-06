@@ -8,6 +8,7 @@ import {
   Card,
 } from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
+import { Link } from 'dva/router';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -81,13 +82,18 @@ export default class BasicForms extends PureComponent {
                 ],
               })(<Input placeholder="请输入系统名称" />)}
             </FormItem>
-            <Form.Item {...formItemLayout} label="数据库名称">
+            <Form.Item {...formItemLayout} label="数据库">
               <Input.Group compact>
-                <Select defaultValue="MySQL" style={{ width: 120 }}>
-                  <Option value="MySQL">MySQL</Option>
-                  <Option value="Oracle">Oracle</Option>
-                  <Option value="SQL Server">SQL Server</Option>
-                </Select>
+                {getFieldDecorator('databaseType', {
+                  initialValue: 'D0001',
+                  rules: [{ required: true }],
+                })(
+                  <Select style={{ width: 120 }}>
+                    <Option value="D0001">oracle</Option>
+                    <Option value="D0002">mysql</Option>
+                    <Option value="D0003">postgresql</Option>
+                  </Select>
+                )}
                 {getFieldDecorator('databaseName', {
                   rules: [
                     { required: true, message: '请输入数据库名称' },
@@ -117,19 +123,6 @@ export default class BasicForms extends PureComponent {
                 ],
               })(<Input placeholder="请输入字段" />)}
             </FormItem>
-
-            <Form.Item {...formItemLayout} label="编码规则">
-              {getFieldDecorator('ruleName', {
-                rules: [{ required: true, message: '请选择规则' }],
-              })(
-                <Select placeholder="请选择规则">
-                  <Option value="1">用户</Option>
-                  <Option value="2">网点</Option>
-                  <Option value="3">水表</Option>
-                  <Option value="4">水厂</Option>
-                </Select>
-              )}
-            </Form.Item>
             <FormItem {...formItemLayout} label="描述">
               {getFieldDecorator('description', {
                 rules: [
@@ -150,7 +143,9 @@ export default class BasicForms extends PureComponent {
               <Button type="primary" htmlType="submit" loading={submitting}>
                 提交
               </Button>
-              <Button style={{ marginLeft: 8 }}>退出</Button>
+              <Link to="infoResources-list">
+                <Button style={{ marginLeft: 8 }}>退出</Button>
+              </Link>
             </FormItem>
           </Form>
         </Card>

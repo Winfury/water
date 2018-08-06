@@ -1,7 +1,7 @@
 import { stringify }  from 'qs';
 import request from '../utils/request';
 
-// 真实数据
+// 资源信息
 export async function queryInfoResources(keyword) {
   return request(`/resource/all/page/1/size/50?${stringify(keyword)}`);
 }
@@ -12,7 +12,6 @@ export async function removeInfoResources(id) {
 }
 export async function addInfoResources(params) {
   params.creatorId = "admin";
-  params.databaseType = "D0001";
   params.datasourceDriver = "oracle.jdbc.driver.OracleDrive";
   params.datasourcePassword = "demopwd";
   params.datasourceUrl = "jdbc:oracle:thin:@localhost:1522:orcl";
@@ -28,6 +27,75 @@ export async function addInfoResources(params) {
   });
 }
 
+// 编码规则
+export async function queryCodeRule(keyword) {
+  return request(`/rules/page/1/size/50?${stringify(keyword)}`,{
+    method: 'POST',
+  });
+}
+export async function queryCode(keyword) {
+  return request(`/codes/page/1/size/50?${stringify(keyword)}`,{
+    method: 'POST',
+  });
+}
+export async function queryValidation(keyword) {
+  return request(`/validations/page/1/size/50?${stringify(keyword)}`,{
+    method: 'POST',
+  });
+}
+export async function removeCodeRule(id) {
+  return request(`/authsec/alter/rule/${id}`, {
+    method: 'DELETE',
+  });
+}
+export async function validation(id) {
+  return request(`/rule/validation/${id}`);
+}
+export async function getValidationInfo(id) {
+  return request(`/rule/validation/results/${id}`);
+}
+export async function addCodeRule(params) {
+  params.creatorId = "admin";
+  params.updateId = "admin";
+  
+  return request('/authsec/alter/rule', {
+    method: 'POST',
+    body: {
+      ...params,
+      method: 'post',
+    },
+  });
+}
+export async function addValidation(params) {
+  return request('/authsec/alter/validation', {
+    method: 'POST',
+    body: {
+      ...params,
+    },
+  });
+}
+
+// 元数据
+export async function queryMetadata(keyword) {
+  return request(`/metadata/all/page/1/size/50?${stringify(keyword)}`);
+}
+export async function removeMetadata(id) {
+  return request(`/metadata/${id}`, {
+    method: 'DELETE',
+  });
+}
+export async function addMetadata(params) {
+  params.creatorId = "admin";
+  params.updateId = "admin";
+  
+  return request('/metadata', {
+    method: 'POST',
+    body: {
+      ...params,
+      method: 'post',
+    },
+  });
+}
 
 export async function queryProjectNotice() {
   return request('/api/project/notice');

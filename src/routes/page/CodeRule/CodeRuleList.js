@@ -24,21 +24,20 @@ const getValue = obj =>
 const statusMap = ['processing', 'success', 'error'];
 const status = ['MySQL', 'Oracle', 'SQL Server'];
 
-@connect(({ rule, loading }) => ({
-  rule,
-  loading: loading.models.rule,
+@connect(({ codeRule, loading }) => ({
+  codeRule,
+  loading: loading.models.codeRule,
 }))
 @Form.create()
-export default class InfoResourcesList extends PureComponent {
+export default class RuleCodeList extends PureComponent {
   state = {
-    expandForm: false,
     formValues: {},
   };
 
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'rule/fetch',
+      type: 'codeRule/fetch',
     });
   }
 
@@ -63,27 +62,8 @@ export default class InfoResourcesList extends PureComponent {
     }
 
     dispatch({
-      type: 'rule/fetch',
+      type: 'codeRule/fetch',
       payload: params,
-    });
-  };
-
-  handleFormReset = () => {
-    const { form, dispatch } = this.props;
-    form.resetFields();
-    this.setState({
-      formValues: {},
-    });
-    dispatch({
-      type: 'rule/fetch',
-      payload: {},
-    });
-  };
-
-  toggleForm = () => {
-    const { expandForm } = this.state;
-    this.setState({
-      expandForm: !expandForm,
     });
   };
 
@@ -105,9 +85,24 @@ export default class InfoResourcesList extends PureComponent {
       });
 
       dispatch({
-        type: 'rule/fetch',
+        type: 'codeRule/fetch',
         payload: values,
       });
+    });
+  };
+
+  deleteItem = id => {
+    console.log(id);
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'codeRule/remove',
+      payload: id,
+      callback: () => {
+        dispatch({
+          type: 'codeRule/fetch',
+          payload: {},
+        });
+      },
     });
   };
 
@@ -119,16 +114,13 @@ export default class InfoResourcesList extends PureComponent {
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
             <FormItem label="关键字">
-              {getFieldDecorator('no')(<Input placeholder="请输入" />)}
+              {getFieldDecorator('keyword')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
             <span className={styles.submitButtons}>
               <Button type="primary" htmlType="submit">
                 查询
-              </Button>
-              <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
-                重置
               </Button>
               <Link to="codeRule-form">
                 <Button style={{ marginLeft: 8 }} icon="plus">
@@ -148,30 +140,30 @@ export default class InfoResourcesList extends PureComponent {
 
   render() {
     const {
-      rule: { data },
+      codeRule: { data },
       loading,
     } = this.props;
 
     const columns = [
       {
         title: '规则名称',
-        dataIndex: 'description',
+        dataIndex: 'ruleName',
       },
       {
         title: '规则详情',
-        dataIndex: 'rule',
+        dataIndex: 'ruleDetail',
       },
       {
         title: '操作',
-        render: () => (
+        render: (record) => (
           <Fragment>
-            <a href="">生成编码</a>
+            {/* <a href="">编辑</a>
+            <Divider type="vertical" /> */}
+            <a onClick={() => this.deleteItem(record.id)}>删除</a>
             <Divider type="vertical" />
-            <a href="dashboard/analysis">查看</a>
-            <Divider type="vertical" />
-            <a href="">编辑</a>
-            <Divider type="vertical" />
-            <a href="dashboard/analysis">删除</a>
+            <Link to="code-list">
+              <a style={{ marginLeft: 8 }}>自动生成</a>
+            </Link>
           </Fragment>
         ),
       },
@@ -185,7 +177,7 @@ export default class InfoResourcesList extends PureComponent {
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm()}</div>
-            <Table columns={columns} loading={loading} dataSource={data.list} />
+            <Table columns={columns} loading={loading} dataSource={data.resultContent} />
           </div>
         </Card>
       </PageHeaderLayout>

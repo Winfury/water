@@ -8,9 +8,10 @@ import {
   Form,
   Input,
   Button,
-  Badge,
-  Divider,
+  message,
   Table,
+  List,
+  Modal,
 } from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 
@@ -21,15 +22,25 @@ const getValue = obj =>
   Object.keys(obj)
     .map(key => obj[key])
     .join(',');
-const statusMap = ['processing', 'success', 'error'];
-const status = ['MySQL', 'Oracle', 'SQL Server'];
 
-@connect(({ infoResources, loading }) => ({
-  infoResources,
-  loading: loading.models.infoResources,
+
+const columnsInfo = [
+  {
+    title: '信息资源名称',
+    dataIndex: 'resName',
+  },
+  {
+    title: '创建时间',
+    dataIndex: 'createDate',
+  },
+];
+
+@connect(({ codeRule, loading }) => ({
+  codeRule,
+  loading: loading.models.codeRule,
 }))
 @Form.create()
-export default class InfoResourcesList extends PureComponent {
+export default class ValidationList extends PureComponent {
   state = {
     formValues: {},
   };
@@ -37,7 +48,7 @@ export default class InfoResourcesList extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'infoResources/fetch',
+      type: 'codeRule/fetchValidation',
     });
   }
 
@@ -62,7 +73,7 @@ export default class InfoResourcesList extends PureComponent {
     }
 
     dispatch({
-      type: 'infoResources/fetch',
+      type: 'codeRule/fetchValidation',
       payload: params,
     });
   };
@@ -85,22 +96,40 @@ export default class InfoResourcesList extends PureComponent {
       });
 
       dispatch({
-        type: 'infoResources/fetch',
+        type: 'codeRule/fetchValidation',
         payload: values,
       });
     });
   };
 
-  deleteItem = id => {
-    console.log(id);
+  valdation = id => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'infoResources/remove',
+      type: 'codeRule/validation',
       payload: id,
       callback: () => {
         dispatch({
-          type: 'infoResources/fetch',
-          payload: {},
+          type: 'codeRule/getValidationInfo',
+          payload: id,
+          callback: (response) => {
+            Modal.success({
+              title: '不符合的信息资源',
+              content: (
+                <List
+                  dataSource={response.resultContent}
+                  renderItem={item => (
+                    <List.Item>
+                      <List.Item.Meta
+                        title={`系统名称：${item.resName}`}
+                        description={`记录：${item.record}`}
+                      />
+                    </List.Item>
+                  )}
+                />
+              ),
+              onOk() { },
+            });
+          },
         });
       },
     });
@@ -122,7 +151,7 @@ export default class InfoResourcesList extends PureComponent {
               <Button type="primary" htmlType="submit">
                 查询
               </Button>
-              <Link to="infoResources-form">
+              <Link to="validation-form">
                 <Button style={{ marginLeft: 8 }} icon="plus">
                   新建
                 </Button>
@@ -140,34 +169,22 @@ export default class InfoResourcesList extends PureComponent {
 
   render() {
     const {
-      infoResources: { data },
+      codeRule: { data },
       loading,
     } = this.props;
 
     const columns = [
       {
-        title: '资源名称',
-        dataIndex: 'name',
+        title: '信息资源名称',
+        dataIndex: 'resName',
       },
       {
-        title: '系统名称',
-        dataIndex: 'system',
+        title: '编码规则',
+        dataIndex: 'ruleName',
       },
       {
-        title: '数据库类型',
-        dataIndex: 'databaseTypeName',
-      },
-      {
-        title: '数据库名称',
-        dataIndex: 'databaseName',
-      },
-      {
-        title: '表名',
-        dataIndex: 'tableName',
-      },
-      {
-        title: '字段名',
-        dataIndex: 'tableField',
+        title: '创建时间',
+        dataIndex: 'createDate',
       },
       {
         title: '操作',
@@ -175,7 +192,7 @@ export default class InfoResourcesList extends PureComponent {
           <Fragment>
             {/* <a href="">编辑</a>
             <Divider type="vertical" /> */}
-            <a onClick={() => this.deleteItem(record.id)}>删除</a>
+            <a onClick={() => this.valdation(record.id)}>校验</a>
           </Fragment>
         ),
       },
@@ -184,7 +201,7 @@ export default class InfoResourcesList extends PureComponent {
 
     return (
       <PageHeaderLayout
-        title="信息资源"
+        title="校验"
       >
         <Card bordered={false}>
           <div className={styles.tableList}>

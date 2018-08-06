@@ -11,6 +11,7 @@ import {
   Badge,
   Divider,
   Table,
+  Modal,
 } from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 
@@ -24,21 +25,20 @@ const getValue = obj =>
 const statusMap = ['processing', 'success', 'error'];
 const status = ['MySQL', 'Oracle', 'SQL Server'];
 
-@connect(({ rule, loading }) => ({
-  rule,
-  loading: loading.models.rule,
+@connect(({ codeRule, loading }) => ({
+  codeRule,
+  loading: loading.models.codeRule,
 }))
 @Form.create()
-export default class InfoResourcesList extends PureComponent {
+export default class CodeList extends PureComponent {
   state = {
-    expandForm: false,
     formValues: {},
   };
 
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'rule/fetch',
+      type: 'codeRule/fetchCode',
     });
   }
 
@@ -63,27 +63,8 @@ export default class InfoResourcesList extends PureComponent {
     }
 
     dispatch({
-      type: 'rule/fetch',
+      type: 'codeRule/fetchCode',
       payload: params,
-    });
-  };
-
-  handleFormReset = () => {
-    const { form, dispatch } = this.props;
-    form.resetFields();
-    this.setState({
-      formValues: {},
-    });
-    dispatch({
-      type: 'rule/fetch',
-      payload: {},
-    });
-  };
-
-  toggleForm = () => {
-    const { expandForm } = this.state;
-    this.setState({
-      expandForm: !expandForm,
     });
   };
 
@@ -105,9 +86,24 @@ export default class InfoResourcesList extends PureComponent {
       });
 
       dispatch({
-        type: 'rule/fetch',
+        type: 'codeRule/fetchCode',
         payload: values,
       });
+    });
+  };
+
+  detail = detail => {
+    Modal.info({
+      title: `编码详情 ${detail.code}`,
+      content: (
+        <div>
+          <p style={{ marginTop: 32 }}>编码规则：{detail.ruleName}</p>
+          <p>随机位数：{detail.random}</p>
+          <p>总数：{detail.total}</p>
+          <p>可用数量：{detail.available}</p>
+        </div>
+      ),
+      onOk() { },
     });
   };
 
@@ -118,22 +114,14 @@ export default class InfoResourcesList extends PureComponent {
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
-            <FormItem label="规则名称">
-              {getFieldDecorator('no')(<Input placeholder="请输入关键字" />)}
-            </FormItem>
-          </Col>
-          <Col md={8} sm={24}>
-            <FormItem label="编码">
-              {getFieldDecorator('no')(<Input placeholder="请输入关键字" />)}
+            <FormItem label="关键字">
+              {getFieldDecorator('keyword')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
             <span className={styles.submitButtons}>
               <Button type="primary" htmlType="submit">
                 查询
-              </Button>
-              <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
-                重置
               </Button>
             </span>
           </Col>
@@ -148,36 +136,38 @@ export default class InfoResourcesList extends PureComponent {
 
   render() {
     const {
-      rule: { data },
+      codeRule: { data },
       loading,
     } = this.props;
 
     const columns = [
       {
         title: '编码',
-        dataIndex: 'callNo',
+        dataIndex: 'code',
       },
       {
         title: '编码规则',
-        dataIndex: 'rule',
+        dataIndex: 'ruleName',
       },
       {
         title: '随机位数',
-        dataIndex: 'progress1',
+        dataIndex: 'random',
       },
       {
         title: '总数',
-        dataIndex: 'progress',
+        dataIndex: 'total',
       },
       {
         title: '可用数量',
-        dataIndex: 'status',
+        dataIndex: 'available',
       },
       {
         title: '操作',
-        render: () => (
+        render: (record) => (
           <Fragment>
-            <a href="">查看详情</a>
+            {/* <a href="">编辑</a>
+            <Divider type="vertical" /> */}
+            <a onClick={() => this.detail(record)}>详情</a>
           </Fragment>
         ),
       },
@@ -191,7 +181,7 @@ export default class InfoResourcesList extends PureComponent {
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm()}</div>
-            <Table columns={columns} loading={loading} dataSource={data.list} />
+            <Table columns={columns} loading={loading} dataSource={data.resultContent} />
           </div>
         </Card>
       </PageHeaderLayout>

@@ -9,6 +9,8 @@ import { format, delay } from 'roadhog-api-doc';
 
 // 是否禁用代理
 const noProxy = process.env.NO_PROXY === 'true';
+// const origin = 'http://16.187.145.62:8081/'
+const origin = 'http://47.104.158.227:8081/'
 
 // 代码中会兼容本地 service mock 以及部署站点的静态数据
 const proxy = {
@@ -136,9 +138,16 @@ const proxy = {
     });
   },
 
-  'GET /resource/(.*)': 'http://16.187.145.62:8081/resource/',
-  'POST /(.*)': 'http://16.187.145.62:8081/',
-  'DELETE /(.*)': 'http://16.187.145.62:8081/',
+  'GET /resource/(.*)': origin + 'resource/',
+  'GET /metadata/(.*)': origin + 'metadata/',
+  'GET /rule/(.*)': origin + 'rule/',
+
+  'POST /(.*)': origin + '/',
+  'POST /rules/(.*)': origin + 'rules/',
+  'POST /codes/(.*)': origin + 'codes/',
+  'POST /validations/(.*)': origin + 'validations/',
+  
+  'DELETE /(.*)': origin + '/',
 };
 
 export default (noProxy ? {

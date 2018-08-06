@@ -8,8 +8,6 @@ import {
   Form,
   Input,
   Button,
-  Badge,
-  Divider,
   Table,
 } from 'antd';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
@@ -21,24 +19,21 @@ const getValue = obj =>
   Object.keys(obj)
     .map(key => obj[key])
     .join(',');
-const statusMap = ['processing', 'success', 'error'];
-const status = ['MySQL', 'Oracle', 'SQL Server'];
 
-@connect(({ rule, loading }) => ({
-  rule,
-  loading: loading.models.rule,
+@connect(({ metadata, loading }) => ({
+  metadata,
+  loading: loading.models.metadata,
 }))
 @Form.create()
-export default class InfoResourcesList extends PureComponent {
+export default class MetadataList extends PureComponent {
   state = {
-    expandForm: false,
     formValues: {},
   };
 
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'rule/fetch',
+      type: 'metadata/fetch',
     });
   }
 
@@ -63,27 +58,8 @@ export default class InfoResourcesList extends PureComponent {
     }
 
     dispatch({
-      type: 'rule/fetch',
+      type: 'metadata/fetch',
       payload: params,
-    });
-  };
-
-  handleFormReset = () => {
-    const { form, dispatch } = this.props;
-    form.resetFields();
-    this.setState({
-      formValues: {},
-    });
-    dispatch({
-      type: 'rule/fetch',
-      payload: {},
-    });
-  };
-
-  toggleForm = () => {
-    const { expandForm } = this.state;
-    this.setState({
-      expandForm: !expandForm,
     });
   };
 
@@ -105,9 +81,23 @@ export default class InfoResourcesList extends PureComponent {
       });
 
       dispatch({
-        type: 'rule/fetch',
+        type: 'metadata/fetch',
         payload: values,
       });
+    });
+  };
+
+  deleteItem = id => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'metadata/remove',
+      payload: id,
+      callback: () => {
+        dispatch({
+          type: 'metadata/fetch',
+          payload: {},
+        });
+      },
     });
   };
 
@@ -119,7 +109,7 @@ export default class InfoResourcesList extends PureComponent {
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={8} sm={24}>
             <FormItem label="关键字">
-              {getFieldDecorator('no')(<Input placeholder="请输入" />)}
+              {getFieldDecorator('keyword')(<Input placeholder="请输入" />)}
             </FormItem>
           </Col>
           <Col md={8} sm={24}>
@@ -127,10 +117,7 @@ export default class InfoResourcesList extends PureComponent {
               <Button type="primary" htmlType="submit">
                 查询
               </Button>
-              <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
-                重置
-              </Button>
-              <Link to="infoResources-form">
+              <Link to="metadata-form">
                 <Button style={{ marginLeft: 8 }} icon="plus">
                   新建
                 </Button>
@@ -148,42 +135,38 @@ export default class InfoResourcesList extends PureComponent {
 
   render() {
     const {
-      rule: { data },
+      metadata: { data },
       loading,
     } = this.props;
 
     const columns = [
       {
         title: '名称',
-        dataIndex: 'description',
+        dataIndex: 'name',
       },
       {
         title: '代码',
-        dataIndex: 'no',
+        dataIndex: 'code',
       },
       {
         title: '属性',
-        dataIndex: 'no',
+        dataIndex: 'attributesName',
       },
       {
         title: '创建人',
-        dataIndex: 'owner',
+        dataIndex: 'creatorId',
       },
       {
         title: '创建时间',
-        dataIndex: 'createdAt',
-      },
-      {
-        title: '数据库名称',
-        dataIndex: 'callNo',
+        dataIndex: 'createDate',
       },
       {
         title: '操作',
-        render: () => (
+        render: (record) => (
           <Fragment>
-            <a href="">编辑</a>
-            <Divider type="vertical" />
-            <a href="dashboard/analysis">删除</a>
+            {/* <a href="">编辑</a>
+            <Divider type="vertical" /> */}
+            <a onClick={() => this.deleteItem(record.id)}>删除</a>
           </Fragment>
         ),
       },
@@ -197,7 +180,7 @@ export default class InfoResourcesList extends PureComponent {
         <Card bordered={false}>
           <div className={styles.tableList}>
             <div className={styles.tableListForm}>{this.renderForm()}</div>
-            <Table columns={columns} loading={loading} dataSource={data.list} />
+            <Table columns={columns} loading={loading} dataSource={data.resultContent} />
           </div>
         </Card>
       </PageHeaderLayout>

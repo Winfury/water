@@ -83,18 +83,24 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, [], () => import('../routes/page/InfoResources/InfoResourcesForm')),
     },
     // 数据编码
-    '/CodeRule/CodeRule-list': {
-      component: dynamicWrapper(app, [], () => import('../routes/page/CodeRule/CodeRuleList')),
+    '/codeRule/codeRule-list': {
+      component: dynamicWrapper(app, ['codeRule'], () => import('../routes/page/CodeRule/CodeRuleList')),
     },
-    '/CodeRule/CodeRule-form': {
+    '/CodeRule/codeRule-form': {
       component: dynamicWrapper(app, [], () => import('../routes/page/CodeRule/CodeRuleForm')),
     },
-    '/CodeRule/Code-list': {
-      component: dynamicWrapper(app, [], () => import('../routes/page/CodeRule/CodeList')),
+    '/codeRule/code-list': {
+      component: dynamicWrapper(app, ['codeRule'], () => import('../routes/page/CodeRule/CodeList')),
+    },
+    '/codeRule/validation-list': {
+      component: dynamicWrapper(app, ['codeRule'], () => import('../routes/page/CodeRule/ValidationList')),
+    },
+    '/codeRule/validation-form': {
+      component: dynamicWrapper(app, [], () => import('../routes/page/CodeRule/ValidationForm')),
     },
     // 元数据
     '/metadata/metadata-list': {
-      component: dynamicWrapper(app, [], () => import('../routes/page/Metadata/MetadataList')),
+      component: dynamicWrapper(app, ['metadata'], () => import('../routes/page/Metadata/MetadataList')),
     },
     '/metadata/metadata-form': {
       component: dynamicWrapper(app, [], () => import('../routes/page/Metadata/MetadataForm')),

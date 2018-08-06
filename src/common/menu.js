@@ -3,7 +3,7 @@ import { isUrl } from '../utils/utils';
 const menuData = [
   {
     name: '信息资源目录',
-    
+    icon: 'database',
     path: 'infoResources',
     children: [
       {
@@ -18,7 +18,7 @@ const menuData = [
   },
   {
     name: '数据编码',
-    
+    icon: 'code',
     path: 'codeRule',
     children: [
       {
@@ -35,17 +35,17 @@ const menuData = [
       },
       {
         name: '校验列表',
-        path: '',
+        path: 'validation-list',
       },
       {
         name: '新建校验',
-        path: '',
+        path: 'validation-form',
       },
     ],
   },
   {
     name: '元数据管理',
-    
+    icon: 'appstore',
     path: 'metadata',
     children: [
       {
@@ -60,7 +60,7 @@ const menuData = [
   },
   {
     name: '代码申请和校验管理',
-    
+    icon: 'code-o',
     path: 'codeApplicationVerification',
     children: [
       {
@@ -79,7 +79,7 @@ const menuData = [
   },
   {
     name: '代码审批管理',
-    
+    icon: 'check-circle-o',
     path: 'codeApprove',
     children: [
       {
@@ -90,7 +90,7 @@ const menuData = [
   },
   {
     name: '代码变更管理',
-    
+    icon: 'retweet',
     path: '',
     children: [
       {
@@ -101,7 +101,7 @@ const menuData = [
   },
   {
     name: '代码接收与分发管理',
-    
+    icon: 'table',
     path: '',
     children: [
       {
@@ -124,7 +124,7 @@ const menuData = [
   },
   {
     name: '代码查询和统计分析',
-    
+    icon: 'area-chart',
     path: '',
     children: [
       {
@@ -139,7 +139,7 @@ const menuData = [
   },
   {
     name: '系统维护',
-    
+    icon: 'setting',
     path: '',
     children: [
       {
@@ -162,27 +162,27 @@ const menuData = [
   },
 
   // 组建案例
-  // {
-  //   name: 'dashboard',
-  //   
-  //   path: 'dashboard',
-  //   children: [
-  //     {
-  //       name: '分析页',
-  //       path: 'analysis',
-  //     },
-  //     {
-  //       name: '监控页',
-  //       path: 'monitor',
-  //     },
-  //     {
-  //       name: '工作台',
-  //       path: 'workplace',
-  //       // hideInBreadcrumb: true,
-  //       // hideInMenu: true,
-  //     },
-  //   ],
-  // },
+  {
+    name: 'dashboard',
+    
+    path: 'dashboard',
+    children: [
+      {
+        name: '分析页',
+        path: 'analysis',
+      },
+      {
+        name: '监控页',
+        path: 'monitor',
+      },
+      {
+        name: '工作台',
+        path: 'workplace',
+        // hideInBreadcrumb: true,
+        // hideInMenu: true,
+      },
+    ],
+  },
   // {
   //   name: '表单页',
   //   icon: 'form',
@@ -203,43 +203,43 @@ const menuData = [
   //     },
   //   ],
   // },
-  {
-    name: '列表页',
-    icon: 'table',
-    path: 'list',
-    children: [
-      {
-        name: '查询表格',
-        path: 'table-list',
-      },
-      {
-        name: '标准列表',
-        path: 'basic-list',
-      },
-      {
-        name: '卡片列表',
-        path: 'card-list',
-      },
-      {
-        name: '搜索列表',
-        path: 'search',
-        children: [
-          {
-            name: '搜索列表（文章）',
-            path: 'articles',
-          },
-          {
-            name: '搜索列表（项目）',
-            path: 'projects',
-          },
-          {
-            name: '搜索列表（应用）',
-            path: 'applications',
-          },
-        ],
-      },
-    ],
-  },
+  // {
+  //   name: '列表页',
+  //   icon: 'table',
+  //   path: 'list',
+  //   children: [
+  //     {
+  //       name: '查询表格',
+  //       path: 'table-list',
+  //     },
+  //     {
+  //       name: '标准列表',
+  //       path: 'basic-list',
+  //     },
+  //     {
+  //       name: '卡片列表',
+  //       path: 'card-list',
+  //     },
+  //     {
+  //       name: '搜索列表',
+  //       path: 'search',
+  //       children: [
+  //         {
+  //           name: '搜索列表（文章）',
+  //           path: 'articles',
+  //         },
+  //         {
+  //           name: '搜索列表（项目）',
+  //           path: 'projects',
+  //         },
+  //         {
+  //           name: '搜索列表（应用）',
+  //           path: 'applications',
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
   // {
   //   name: '详情页',
   //   icon: 'profile',

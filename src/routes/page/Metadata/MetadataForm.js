@@ -7,6 +7,7 @@ import {
   Button,
   Card,
 } from 'antd';
+import { Link } from 'dva/router';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 
 const FormItem = Form.Item;
@@ -14,7 +15,7 @@ const { Option } = Select;
 const { TextArea } = Input;
 
 @connect(({ loading }) => ({
-  submitting: loading.effects['form/submitRegularForm'],
+  submitting: loading.effects['metadata/add'],
 }))
 @Form.create()
 export default class BasicForms extends PureComponent {
@@ -24,7 +25,7 @@ export default class BasicForms extends PureComponent {
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         dispatch({
-          type: 'form/submitRegularForm',
+          type: 'metadata/add',
           payload: values,
         });
       }
@@ -62,7 +63,7 @@ export default class BasicForms extends PureComponent {
         <Card bordered={false}>
           <Form onSubmit={this.handleSubmit} hideRequiredMark style={{ marginTop: 8 }}>
             <FormItem {...formItemLayout} label="元数据名称">
-              {getFieldDecorator('title', {
+              {getFieldDecorator('name', {
                 rules: [
                   {
                     required: true,
@@ -72,7 +73,7 @@ export default class BasicForms extends PureComponent {
               })(<Input placeholder="请输入元数据名称" />)}
             </FormItem>
             <FormItem {...formItemLayout} label="元数据代码">
-              {getFieldDecorator('title', {
+              {getFieldDecorator('code', {
                 rules: [
                   {
                     required: true,
@@ -83,19 +84,20 @@ export default class BasicForms extends PureComponent {
             </FormItem>
 
             <Form.Item {...formItemLayout} label="属性">
-              {getFieldDecorator('owner', {
-                rules: [{ required: true, message: '类别' }],
+              {getFieldDecorator('attributes', {
+                rules: [{ required: true, message: '请选择属性' }],
               })(
-                <Select placeholder="请选择类别">
-                  <Option value="1">区</Option>
-                  <Option value="2">街道</Option>
-                  <Option value="3">年份</Option>
-                  <Option value="4">供应商</Option>
+                <Select placeholder="请选择属性">
+                  <Option value="A0001">类别</Option>
+                  <Option value="A0002">区</Option>
+                  <Option value="A0003">街道</Option>
+                  <Option value="A0004">年份</Option>
+                  <Option value="A0005">供应商</Option>
                 </Select>
               )}
             </Form.Item>
             <FormItem {...formItemLayout} label="描述">
-              {getFieldDecorator('goal', {
+              {getFieldDecorator('description', {
                 rules: [
                   {
                     required: true,
@@ -114,7 +116,9 @@ export default class BasicForms extends PureComponent {
               <Button type="primary" htmlType="submit" loading={submitting}>
                 提交
               </Button>
-              <Button style={{ marginLeft: 8 }}>退出</Button>
+              <Link to="metadata-list">
+                <Button style={{ marginLeft: 8 }}>退出</Button>
+              </Link>
             </FormItem>
           </Form>
         </Card>
